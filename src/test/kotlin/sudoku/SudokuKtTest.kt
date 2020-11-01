@@ -33,12 +33,21 @@ class SudokuKtTest {
         assertThat(result).isEqualTo(solvedPuzzle)
     }
 
-//    @Test
-//    fun `should calculate single empty value in second row in 9x9 grid`() {
-//        val grid = singleEmptyGridValueIsThreeAtIndexTwelve
-//
-//        val result = calculateValue(grid, 12)
-//
-//        assertThat(result).isEqualTo(3)
-//    }
+    @Test
+    fun `should calculate single empty value in second row in 9x9 grid`() {
+        val grid = singleEmptyGridValueIsThreeAtIndexTwelve
+
+        val result = calculateValue(grid, 12)
+
+        assertThat(result).isEqualTo(3)
+    }
+
+    @Test
+    fun `should calculate 9x9 grid with one empty grid position in second row`() {
+        val input = singleEmptyGridValueIsThreeAtIndexTwelve
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(solvedPuzzle)
+    }
 }
