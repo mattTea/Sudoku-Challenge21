@@ -7,6 +7,15 @@ import org.junit.jupiter.api.Test
 
 class SudokuKtTest {
     @Test
+    fun `should return single possible row value`() {
+        val grid = singleEmptyGridValueIsSixAtIndexFive
+
+        val result = possibleRowValues(grid, 0)
+
+        assertThat(result).containsExactly(6)
+    }
+
+    @Test
     fun `should return column values`() {
         val grid = singleEmptyGridValueIsSixAtIndexFive
 

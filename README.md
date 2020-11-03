@@ -95,3 +95,6 @@ Solved puzzle
 4,8,7,1,2,3,5,9,6,
 9,3,2,5,6,8,7,1,4
 ```
+
+
+[Example grids](http://www.sudoku-download.net/files/Solution_60_Sudokus_Pattern_Easy.pdf) 
