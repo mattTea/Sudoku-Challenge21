@@ -36,5 +36,26 @@ val singleEmptyGridValueIsThreeAtIndexTwelve = listOf(
     9, 3, 2, 5, 6, 8, 7, 1, 4
 )
 
-// where indexes are index and index + every multiple of 9 that is less than 81
+val singleEmptyGridValueIsOneAtIndexThirtyFive = listOf(
+    7, 2, 3, 8, 4, 6, 1, 5, 9,
+    6, 1, 5, 3, 9, 2, 4, 7, 8,
+    8, 4, 9, 7, 1, 5, 6, 3, 2,
+    3, 7, 8, 6, 5, 4, 9, 2, 0,
+    1, 9, 4, 2, 8, 7, 3, 6, 5,
+    2, 5, 6, 9, 3, 1, 8, 4, 7,
+    5, 6, 1, 4, 7, 9, 2, 8, 3,
+    4, 8, 7, 1, 2, 3, 5, 9, 6,
+    9, 3, 2, 5, 6, 8, 7, 1, 4
+)
 
+val twoEmptyGridValues = listOf( // 1 and 9
+    7, 2, 3, 8, 4, 6, 1, 5, 9,
+    6, 1, 5, 3, 9, 2, 4, 7, 8,
+    8, 4, 9, 7, 1, 5, 6, 3, 2,
+    3, 7, 8, 6, 5, 4, 9, 2, 0,
+    1, 9, 4, 2, 8, 7, 3, 6, 5,
+    2, 5, 6, 9, 3, 1, 8, 4, 7,
+    5, 6, 1, 4, 7, 9, 2, 8, 3,
+    4, 8, 7, 1, 2, 3, 5, 9, 6,
+    0, 3, 2, 5, 6, 8, 7, 1, 4
+)

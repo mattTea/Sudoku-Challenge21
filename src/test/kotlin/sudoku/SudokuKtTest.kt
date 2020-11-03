@@ -59,4 +59,22 @@ class SudokuKtTest {
 
         assertThat(result).isEqualTo(solvedPuzzle)
     }
+
+    @Test
+    fun `should calculate 9x9 grid with one empty grid position at end of row`() {
+        val input = singleEmptyGridValueIsOneAtIndexThirtyFive
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(solvedPuzzle)
+    }
+
+    @Test
+    fun `should calculate 9x9 grid with two empty grid positions in separate rows and columns`() {
+        val input = twoEmptyGridValues
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(solvedPuzzle)
+    }
 }

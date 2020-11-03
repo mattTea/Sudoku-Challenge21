@@ -10,7 +10,7 @@ fun solveSudoku(input: List<Int>): List<Int> =
     }
 
 fun calculateValue(grid: List<Int>, index: Int): Int {
-    val rowIndex = floor((index + 1) / ROW_LENGTH.toDouble()).toInt()
+    val rowIndex = floor((index) / ROW_LENGTH.toDouble()).toInt()
     val columnIndex = index - (rowIndex * ROW_LENGTH)
 
     return possibleRowValues(grid, rowIndex).subtract(columnValues(grid, columnIndex)).single()
