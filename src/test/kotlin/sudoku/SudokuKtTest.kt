@@ -2,6 +2,7 @@ package sudoku
 
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.containsOnly
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 
@@ -30,7 +31,7 @@ class SudokuKtTest {
 
         val result = calculateValue(grid, 5)
 
-        assertThat(result).isEqualTo(6)
+        assertThat(result).containsOnly(6)
     }
 
     @Test
@@ -48,7 +49,7 @@ class SudokuKtTest {
 
         val result = calculateValue(grid, 12)
 
-        assertThat(result).isEqualTo(3)
+        assertThat(result).containsOnly(3)
     }
 
     @Test
@@ -104,4 +105,16 @@ class SudokuKtTest {
 
         assertThat(result).containsExactly(6,5,4,2,8,7,9,3,1)
     }
+
+    @Test
+    fun `should calculate two possible options for empty grid position`() {
+        val grid = multipleValueOptionsAtIndexThirtyFiveCorrectIsOne
+
+        val result = calculateValue(grid, 35)
+
+        assertThat(result).containsOnly(1,2)
+    }
+
+    // next test to remove '.first()' call from solveSudoku - needs to handle multiple options
+    // and loop through when more is learnt
 }

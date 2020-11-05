@@ -6,17 +6,17 @@ const val ROW_LENGTH = 9
 
 fun solveSudoku(grid: List<Int>): List<Int> =
     grid.mapIndexed { index, it ->
-        if (it == 0) calculateValue(grid, index) else it
+        if (it == 0) calculateValue(grid, index).first() else it
     }
 
-fun calculateValue(grid: List<Int>, index: Int): Int {
+fun calculateValue(grid: List<Int>, index: Int): List<Int> {
     val rowIndex = floor((index) / ROW_LENGTH.toDouble()).toInt()
     val columnIndex = index - (rowIndex * ROW_LENGTH)
 
     return possibleRowValues(grid, rowIndex)
         .subtract(columnValues(grid, columnIndex))
         .subtract(regionValues(grid, columnIndex, rowIndex))
-        .single()
+        .toList()
 }
 
 fun possibleRowValues(grid: List<Int>, rowIndex: Int): List<Int> =
