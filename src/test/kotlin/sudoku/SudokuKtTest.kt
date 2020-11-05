@@ -77,4 +77,31 @@ class SudokuKtTest {
 
         assertThat(result).isEqualTo(solvedPuzzle)
     }
+
+    @Test
+    fun `should return region values for second region`() {
+        val grid = singleEmptyGridValueIsSixAtIndexFive
+
+        val result = regionValues(grid, 5, 0)
+
+        assertThat(result).containsExactly(8,4,0,3,9,2,7,1,5)
+    }
+
+    @Test
+    fun `should return region values for ninth region`() {
+        val grid = singleEmptyGridValueIsSixAtIndexFive
+
+        val result = regionValues(grid, 8, 8)
+
+        assertThat(result).containsExactly(2,8,3,5,9,6,7,1,4)
+    }
+
+    @Test
+    fun `should return region values for fifth region`() {
+        val grid = singleEmptyGridValueIsSixAtIndexFive
+
+        val result = regionValues(grid, 5, 5)
+
+        assertThat(result).containsExactly(6,5,4,2,8,7,9,3,1)
+    }
 }
