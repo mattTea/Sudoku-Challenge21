@@ -1,17 +1,26 @@
 package sudoku
 
-import kotlin.math.floor
-
 const val ROW_LENGTH = 9
 
-fun solveSudoku(grid: List<Int>): List<Int> =
-    grid.mapIndexed { index, it ->
-        if (it == 0) calculateValue(grid, index).first() else it
+fun solveSudoku(grid: List<Int>): List<Int> {
+    val sudokuTry = grid.mapIndexed { index, it ->
+        if (it == 0) calculateValue(grid, index) else listOf(it)
     }
 
+    return if (sudokuTry.all { it.size == 1 }) {
+        sudokuTry.flatten()
+    } else {
+        val newGrid = sudokuTry
+            .toMutableList()
+            .map { if (it.size > 1) 0 else it.single() }
+
+        solveSudoku(newGrid)
+    }
+}
+
 fun calculateValue(grid: List<Int>, index: Int): List<Int> {
-    val rowIndex = floor((index) / ROW_LENGTH.toDouble()).toInt()
-    val columnIndex = index - (rowIndex * ROW_LENGTH)
+    val rowIndex = index / ROW_LENGTH
+    val columnIndex = index % ROW_LENGTH
 
     return possibleRowValues(grid, rowIndex)
         .subtract(columnValues(grid, columnIndex))
@@ -40,7 +49,7 @@ fun columnValues(grid: List<Int>, columnIndex: Int): List<Int> {
 
 fun regionValues(grid: List<Int>, columnIndex: Int, rowIndex: Int): List<Int> {
 
-    // TODO() refactor below to use something like coordinates so it is scalable
+    // TODO() refactor below
 
     val regionIndices = when {
         columnIndex <= 2 && rowIndex <= 2 -> listOf(0,1,2,9,10,11,18,19,20)

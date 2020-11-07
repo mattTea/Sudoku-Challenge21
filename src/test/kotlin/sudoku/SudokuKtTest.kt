@@ -115,6 +115,12 @@ class SudokuKtTest {
         assertThat(result).containsOnly(1,2)
     }
 
-    // next test to remove '.first()' call from solveSudoku - needs to handle multiple options
-    // and loop through when more is learnt
+    @Test
+    fun `should calculate 9x9 grid with three empty grid positions in adjacent positions`() {
+        val input = multipleValueOptionsAtIndexThirtyFiveCorrectIsOne
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(solvedPuzzle)
+    }
 }
