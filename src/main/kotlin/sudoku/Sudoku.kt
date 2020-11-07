@@ -50,19 +50,13 @@ fun columnValues(grid: List<Int>, columnIndex: Int): List<Int> {
 fun regionValues(grid: List<Int>, columnIndex: Int, rowIndex: Int): List<Int> {
     val startingRow = columnIndex / 3
     val startingColumn = rowIndex / 3
-    val regionStartingIndex = ((startingColumn * 9) + startingRow) * 3
+    val regionStartingIndex = ((startingColumn * ROW_LENGTH) + startingRow) * 3
 
-    val regionIndices = listOf(
-        regionStartingIndex,
-        regionStartingIndex + 1,
-        regionStartingIndex + 2,
-        regionStartingIndex + (1 * 9),
-        regionStartingIndex + (1 * 9) + 1,
-        regionStartingIndex + (1 * 9) + 2,
-        regionStartingIndex + (2 * 9),
-        regionStartingIndex + (2 * 9) + 1,
-        regionStartingIndex + (2 * 9) + 2,
-    )
+    val regionTopRow = (regionStartingIndex..(regionStartingIndex + 2)).toList()
+    val regionIndices =
+            regionTopRow +
+            regionTopRow.map { it + ROW_LENGTH } +
+            regionTopRow.map { it + (2* ROW_LENGTH) }
 
     return grid.filterIndexed { index, _ ->
         regionIndices.contains(index)
