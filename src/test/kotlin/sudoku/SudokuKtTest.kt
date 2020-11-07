@@ -123,4 +123,13 @@ class SudokuKtTest {
 
         assertThat(result).isEqualTo(solvedPuzzle)
     }
+
+    @Test
+    fun `should calculate full single answer, solvable puzzle`() {
+        val input = simplePuzzle
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(simplePuzzleSolution)
+    }
 }
