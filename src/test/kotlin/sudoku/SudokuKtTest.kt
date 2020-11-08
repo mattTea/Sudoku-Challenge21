@@ -125,11 +125,20 @@ class SudokuKtTest {
     }
 
     @Test
-    fun `should calculate full single answer, solvable puzzle`() {
+    fun `should calculate full simple, solvable puzzle`() {
         val input = simplePuzzle
 
         val result = solveSudoku(input)
 
         assertThat(result).isEqualTo(simplePuzzleSolution)
+    }
+
+    @Test
+    fun `should return zeros for grid positions that could contain more than one value`() {
+        val input = puzzleWithMoreThanOneSolution
+
+        val result = solveSudoku(input)
+
+        assertThat(result).isEqualTo(puzzleWithMoreThanOneSolutionOutput)
     }
 }

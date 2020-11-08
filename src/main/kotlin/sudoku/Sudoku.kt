@@ -14,7 +14,7 @@ fun solveSudoku(grid: List<Int>): List<Int> {
             .toMutableList()
             .map { if (it.size > 1) 0 else it.single() }
 
-        solveSudoku(newGrid)
+        if (newGrid == grid) newGrid else solveSudoku(newGrid)
     }
 }
 
