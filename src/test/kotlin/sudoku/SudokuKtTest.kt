@@ -35,7 +35,7 @@ class SudokuKtTest {
     }
 
     @Test
-    fun `should calculate 9x9 grid with one empty grid position in first row`() {
+    fun `should solve puzzle with one empty grid position in first row`() {
         val input = singleEmptyGridValueIsSixAtIndexFive
 
         val result = solveSudoku(input)
@@ -44,7 +44,7 @@ class SudokuKtTest {
     }
 
     @Test
-    fun `should calculate single empty value in second row in 9x9 grid`() {
+    fun `should calculate single empty value in second row in 9x9 puzzle`() {
         val grid = singleEmptyGridValueIsThreeAtIndexTwelve
 
         val result = calculateValue(grid, 12)
@@ -140,5 +140,45 @@ class SudokuKtTest {
         val result = solveSudoku(input)
 
         assertThat(result).isEqualTo(puzzleWithMoreThanOneSolutionOutput)
+    }
+
+//    @Test
+//    fun `should calculate full hard, solvable puzzle`() {
+//        val input = hardPuzzle
+//
+//        val result = solveSudoku(input)
+//
+//        assertThat(result).isEqualTo(hardPuzzleSolution)
+//    }
+
+    @Test
+    fun `should create grid replacing index with indexed value`() {
+        val grid = multipleValueOptionsAtIndexThirtyFiveCorrectIsOne
+        val expected = listOf(
+            7, 2, 3, 8, 4, 6, 1, 5, 9,
+            6, 1, 5, 3, 9, 2, 4, 7, 8,
+            8, 4, 9, 7, 1, 5, 6, 3, 0,
+            3, 7, 8, 6, 5, 4, 9, 0, 1,
+            1, 9, 4, 2, 8, 7, 3, 6, 5,
+            2, 5, 6, 9, 3, 1, 8, 4, 7,
+            5, 6, 1, 4, 7, 9, 2, 8, 3,
+            4, 8, 7, 1, 2, 3, 5, 9, 6,
+            9, 3, 2, 5, 6, 8, 7, 1, 4
+        )
+
+        val result = createGrid(grid, 35, 1)
+
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    fun `should return list of possible grids`() {
+        val startingGrid = multipleValueOptionsAtIndexThirtyFiveCorrectIsOne
+        val possibleGrid1 = multipleValueOptionsAtIndexThirtyFiveCorrectIsOneCorrectOption1
+        val possibleGrid2 = multipleValueOptionsAtIndexThirtyFiveCorrectIsOneIncorrectOption2
+
+        val result = createPossibleGrids(startingGrid, Pair(35, listOf(1, 2)))
+
+        assertThat(result).containsOnly(possibleGrid1, possibleGrid2)
     }
 }
