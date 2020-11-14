@@ -1,33 +1,25 @@
 package sudoku
 
+typealias Grid = List<Int>
+
 const val ROW_LENGTH = 9
 
-fun solveSudoku(grid: List<Int>): List<Int> {
+fun solveSudoku(grid: Grid): Grid {
     val gridWithAllPossibleValues = calculateAllPossibleValuesInGrid(grid)
-
     val newGrid = gridWithAllPossibleValues.map { if (it.size == 1) it.single() else 0 }
 
-    val indexesWithPossibleValues = calculateGuesses(gridWithAllPossibleValues)
+    if (gridWithAllPossibleValues.all { it.size == 1 }) return gridWithAllPossibleValues.flatten()
 
-    // loop through Pairs in indexesWithPossibleValues calling makeGuess()
-    // if any come back with a different grid than was passed in call solveSudoku
-    // make sure suss out the base case for this recursion
-
-
-    return if (gridWithAllPossibleValues.all { it.size == 1 }) {
-        gridWithAllPossibleValues.flatten()
-    } else {
-        if (newGrid == grid) newGrid else solveSudoku(newGrid)
-    }
+    return if (newGrid == grid) newGrid else solveSudoku(newGrid)
 }
 
-fun calculateAllPossibleValuesInGrid(grid: List<Int>): List<List<Int>> {
+fun calculateAllPossibleValuesInGrid(grid: Grid): List<List<Int>> {
     return grid.mapIndexed { index, it ->
         if (it == 0) calculatePossibleValues(grid, index) else listOf(it)
     }
 }
 
-fun calculatePossibleValues(grid: List<Int>, index: Int): List<Int> {
+fun calculatePossibleValues(grid: Grid, index: Int): List<Int> {
     val rowIndex = index / ROW_LENGTH
     val columnIndex = index % ROW_LENGTH
 
@@ -37,7 +29,7 @@ fun calculatePossibleValues(grid: List<Int>, index: Int): List<Int> {
         .toList()
 }
 
-fun possibleRowValues(grid: List<Int>, rowIndex: Int): List<Int> {
+fun possibleRowValues(grid: Grid, rowIndex: Int): List<Int> {
     val possibleValues = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
     return possibleValues.subtract(
@@ -48,7 +40,7 @@ fun possibleRowValues(grid: List<Int>, rowIndex: Int): List<Int> {
     ).toList()
 }
 
-fun columnValues(grid: List<Int>, columnIndex: Int): List<Int> {
+fun columnValues(grid: Grid, columnIndex: Int): List<Int> {
     val rowLengthMultiples = (grid.indices).filter { it % ROW_LENGTH == 0 }
 
     return grid.filterIndexed { index, _ ->
@@ -58,7 +50,7 @@ fun columnValues(grid: List<Int>, columnIndex: Int): List<Int> {
     }
 }
 
-fun regionValues(grid: List<Int>, columnIndex: Int, rowIndex: Int): List<Int> {
+fun regionValues(grid: Grid, columnIndex: Int, rowIndex: Int): List<Int> {
     val startingRow = columnIndex / 3
     val startingColumn = rowIndex / 3
     val regionStartingIndex = ((startingColumn * ROW_LENGTH) + startingRow) * 3
@@ -75,35 +67,22 @@ fun regionValues(grid: List<Int>, columnIndex: Int, rowIndex: Int): List<Int> {
     }
 }
 
-//fun createGrid(grid: List<Int>, gridIndex: Int, value: Int): List<Int> =
-//    grid.mapIndexed { index, it -> if (index == gridIndex) value else it }
-//
-//fun createPossibleGrids(
-//    grid: List<Int>,
-//    pairOfIndexAndPossibleValues: Pair<Int, List<Int>>
-//): List<List<Int>> =
-//    pairOfIndexAndPossibleValues.second.map { createGrid(grid, pairOfIndexAndPossibleValues.first, it) }
-
-fun calculateGuesses(gridWithPossibleValues: List<List<Int>>): List<Pair<Int, List<Int>>> =
+fun createGuesses(gridWithPossibleValues: List<List<Int>>): List<Pair<Int, List<Int>>> =
     gridWithPossibleValues.mapIndexedNotNull { index, possibleValues ->
         if (possibleValues.size > 1) Pair(index, possibleValues) else null
     }
 
-fun makeGuess(grid: List<Int>, index: Int, possibleValues: List<Int>): List<Int> {
-    val startingGridWithAllPossibleValues = calculateAllPossibleValuesInGrid(grid)
+fun isValid(grid: Grid, index: Int, value: Int): Boolean {
+    val rowIndex = index / ROW_LENGTH
+    val columnIndex = index % ROW_LENGTH
 
-    val listOfGrids = possibleValues.map { possibleValue ->
-        grid.mapIndexed { gridIndex, originalValue ->
-            if (gridIndex == index) possibleValue else originalValue
-        }
-    }
+    val rowValues = grid.subList(
+        (rowIndex * ROW_LENGTH),
+        (((rowIndex + 1) * ROW_LENGTH))
+    )
 
-    val listOfSuccessfulGrids = listOfGrids.mapNotNull { gridGuess ->
-        val guess = calculateAllPossibleValuesInGrid(gridGuess).flatten()
+    val columnValues = columnValues(grid, columnIndex)
+    val regionValues = regionValues(grid, columnIndex, rowIndex)
 
-        if (guess != startingGridWithAllPossibleValues.flatten()) guess else null
-    }
-
-    return if (listOfSuccessfulGrids.isNotEmpty()) listOfSuccessfulGrids.first() else grid
-    // try changing this to list of successful grids being returned
+    return !(rowValues + columnValues + regionValues).contains(value)
 }
