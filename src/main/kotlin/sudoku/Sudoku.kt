@@ -8,6 +8,8 @@ fun solveSudoku(grid: Grid): Grid {
     val gridWithAllPossibleValues = calculateAllPossibleValuesInGrid(grid)
     val newGrid = gridWithAllPossibleValues.map { if (it.size == 1) it.single() else 0 }
 
+//    val indexesWithPossibleValues = createGuesses(gridWithAllPossibleValues)
+
     if (gridWithAllPossibleValues.all { it.size == 1 }) return gridWithAllPossibleValues.flatten()
 
     return if (newGrid == grid) newGrid else solveSudoku(newGrid)
@@ -85,4 +87,28 @@ fun isValid(grid: Grid, index: Int, value: Int): Boolean {
     val regionValues = regionValues(grid, columnIndex, rowIndex)
 
     return !(rowValues + columnValues + regionValues).contains(value)
+}
+
+fun createGrid(grid: List<Int>, gridIndex: Int, value: Int): List<Int> =
+    grid.mapIndexed { index, it -> if (index == gridIndex) value else it }
+
+fun bruteForceSolveSudoku(grid: Grid, indexesWithPossibleValues: List<Pair<Int, List<Int>>>): Grid {
+    var indexesWithPossibleValuesIndex = 0
+    var optionsIndex = 0
+
+    val optionIsValid = isValid(
+        grid = grid,
+        index = indexesWithPossibleValues[indexesWithPossibleValuesIndex].first,
+        value = indexesWithPossibleValues[indexesWithPossibleValuesIndex].second[optionsIndex]
+    )
+
+    return if (optionIsValid) {
+        createGrid(
+            grid = grid,
+            gridIndex = indexesWithPossibleValues[indexesWithPossibleValuesIndex].first,
+            value = indexesWithPossibleValues[indexesWithPossibleValuesIndex].second[optionsIndex]
+        )
+    } else {
+        emptyList()
+    }
 }
