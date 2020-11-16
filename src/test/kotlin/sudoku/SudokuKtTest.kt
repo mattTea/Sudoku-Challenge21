@@ -211,4 +211,25 @@ class SudokuKtTest {
 
         assertThat(result).isEqualTo(solvedPuzzle)
     }
+
+    @Test
+    fun `should solve puzzle for indexesWithPossibleValues of length 1, where second option is valid`() {
+        val grid = listOf(
+            7, 2, 3, 8, 4, 6, 1, 5, 9,
+            6, 1, 5, 3, 9, 2, 4, 7, 8,
+            8, 4, 9, 7, 1, 5, 6, 3, 2,
+            3, 7, 8, 6, 5, 4, 9, 2, 0,
+            1, 9, 4, 2, 8, 7, 3, 6, 5,
+            2, 5, 6, 9, 3, 1, 8, 4, 7,
+            5, 6, 1, 4, 7, 9, 2, 8, 3,
+            4, 8, 7, 1, 2, 3, 5, 9, 6,
+            9, 3, 2, 5, 6, 8, 7, 1, 4
+        )
+
+        val indexesWithPossibleValues = listOf(Pair(35, listOf(2,1)))
+
+        val result = bruteForceSolveSudoku(grid, indexesWithPossibleValues)
+
+        assertThat(result).isEqualTo(solvedPuzzle)
+    }
 }

@@ -92,10 +92,12 @@ fun isValid(grid: Grid, index: Int, value: Int): Boolean {
 fun createGrid(grid: List<Int>, gridIndex: Int, value: Int): List<Int> =
     grid.mapIndexed { index, it -> if (index == gridIndex) value else it }
 
-fun bruteForceSolveSudoku(grid: Grid, indexesWithPossibleValues: List<Pair<Int, List<Int>>>): Grid {
-    var indexesWithPossibleValuesIndex = 0
-    var optionsIndex = 0
-
+fun bruteForceSolveSudoku(
+    grid: Grid,
+    indexesWithPossibleValues: List<Pair<Int, List<Int>>>,
+    indexesWithPossibleValuesIndex: Int = 0,
+    optionsIndex: Int = 0
+): Grid {
     val optionIsValid = isValid(
         grid = grid,
         index = indexesWithPossibleValues[indexesWithPossibleValuesIndex].first,
@@ -109,6 +111,11 @@ fun bruteForceSolveSudoku(grid: Grid, indexesWithPossibleValues: List<Pair<Int, 
             value = indexesWithPossibleValues[indexesWithPossibleValuesIndex].second[optionsIndex]
         )
     } else {
-        emptyList()
+        bruteForceSolveSudoku(
+            grid = grid,
+            indexesWithPossibleValues = indexesWithPossibleValues,
+            indexesWithPossibleValuesIndex = indexesWithPossibleValuesIndex,
+            optionsIndex = optionsIndex + 1
+        )
     }
 }
