@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import org.junit.jupiter.api.Test
 
-class SudokuKtTest {
+class SimpleSudokuKtTest {
     @Test
     fun `should return single possible row value`() {
         val grid = singleEmptyGridValueIsSixAtIndexFive
