@@ -101,4 +101,40 @@ class ComplexSudokuKtTest {
 
         assertThat(result).isEqualTo(expected)
     }
+
+    @Test
+    fun `should solve two line puzzle for indexesWithPossibleValues of length 3`() {
+        val grid = listOf(
+            7, 0, 0, 8, 4, 6, 1, 5, 9,
+            6, 0, 5, 3, 9, 2, 4, 7, 8
+        )
+
+        val expected = listOf(
+            7, 2, 3, 8, 4, 6, 1, 5, 9,
+            6, 1, 5, 3, 9, 2, 4, 7, 8
+        )
+
+        val indexesWithPossibleValues = listOf(
+            Pair(1, listOf(2,3)),
+            Pair(2, listOf(2,3)),
+            Pair(10, listOf(1,2))
+        )
+
+        val result = solveComplexSudoku(grid, indexesWithPossibleValues)
+
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    fun `should solve full puzzle`() {
+        val grid = hardPuzzle
+        val indexesWithPossibleValues = hardPuzzleIndexesWithPossibleValues
+
+        val result = solveComplexSudoku(grid, indexesWithPossibleValues)
+
+        assertThat(result).isEqualTo(hardPuzzleSolution)
+    }
+
+    // to pass - implement length limit and backtracking if end of length limit is reached before finding a valid option
+    // backtrack to next index and increment that option to next in options
 }
