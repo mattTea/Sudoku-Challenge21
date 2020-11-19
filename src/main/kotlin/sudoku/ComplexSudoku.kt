@@ -27,43 +27,15 @@ fun solveComplexSudoku(
                 optionsIndex = 0
             )
         } else {
-            if (indexesAndOptions[indexesAndOptionsIndex].second.size > optionsIndex) {
+            if (indexesAndOptions[indexesAndOptionsIndex].second.size - 1 > optionsIndex) {
                 solveComplexSudoku(
-                    grid = grid,
+                    grid = grid, // TODO <- need to create grid rather than reuse here?
                     indexesAndOptions = indexesAndOptions,
                     indexesAndOptionsIndex = indexesAndOptionsIndex,
                     optionsIndex = optionsIndex + 1
                 )
             } else {
-                // find the value previously used
-                val previousGuessPosition = indexesAndOptions[indexesAndOptionsIndex - 1].first
-
-                val currentValueInPreviousGuessPosition = grid[previousGuessPosition]
-
-                // see where that sits in the related options list for this index, get its index and increment by 1
-                val listOfPossibleOptions = indexesAndOptions[indexesAndOptionsIndex - 1].second
-
-                val currentValueOptionsIndex = listOfPossibleOptions.mapIndexedNotNull { index, option ->
-                    if (option == currentValueInPreviousGuessPosition) index else null
-                }.single()
-
-//                if (currentValueOptionsIndex < indexesAndOptions[indexesAndOptionsIndex - 1].second.size) {
-                solveComplexSudoku(
-                    grid = createGrid(
-                        grid = grid,
-                        gridIndex = indexesAndOptions[indexesAndOptionsIndex].first,
-                        value = indexesAndOptions[indexesAndOptionsIndex].second[optionsIndex]
-                    ),
-                    indexesAndOptions = indexesAndOptions,
-                    indexesAndOptionsIndex = indexesAndOptionsIndex - 1,
-                    optionsIndex = currentValueOptionsIndex + 1
-                )
-//                } else {
-//                    // do the above else condition again - refactor out to a method to recall this
-//                    // actually might need to move the "less than" if statement out
-//                    // so that we either increment options index if we have another option,
-//                    // or decrement the indexesWithPossibleValuesIndex
-//                    emptyList()
+                backtrack(grid, indexesAndOptions, indexesAndOptionsIndex, optionsIndex)  // TODO <- need to create grid rather than reuse here?
             }
         }
     }
@@ -86,3 +58,40 @@ fun isValid(grid: Grid, index: Int, value: Int): Boolean {
 
 fun createGrid(grid: List<Int>, gridIndex: Int, value: Int): List<Int> =
     grid.mapIndexed { index, it -> if (index == gridIndex) value else it }
+
+fun backtrack(
+    grid: Grid,
+    indexesAndOptions: List<Pair<Int, List<Int>>>,
+    indexesAndOptionsIndex: Int,
+    optionsIndex: Int,
+    backtrackPositions: Int = 1
+): Grid {
+    val previousGuessPosition = indexesAndOptions[indexesAndOptionsIndex - backtrackPositions].first
+    val currentValueInPreviousGuessPosition = grid[previousGuessPosition]
+
+    val listOfPossibleOptions = indexesAndOptions[indexesAndOptionsIndex - backtrackPositions].second
+    val currentValueOptionsIndex = listOfPossibleOptions.mapIndexedNotNull { index, option ->
+        if (option == currentValueInPreviousGuessPosition) index else null
+    }.single()
+
+    return if (currentValueOptionsIndex < indexesAndOptions[indexesAndOptionsIndex - backtrackPositions].second.size - 1) {
+        solveComplexSudoku(
+            grid = createGrid(
+                grid = grid,
+                gridIndex = indexesAndOptions[indexesAndOptionsIndex].first,
+                value = indexesAndOptions[indexesAndOptionsIndex].second[optionsIndex]
+            ),
+            indexesAndOptions = indexesAndOptions,
+            indexesAndOptionsIndex = indexesAndOptionsIndex - backtrackPositions,
+            optionsIndex = currentValueOptionsIndex + 1
+        )
+    } else {
+        backtrack(
+            grid = grid,
+            indexesAndOptions = indexesAndOptions,
+            indexesAndOptionsIndex = indexesAndOptionsIndex,
+            optionsIndex = optionsIndex,
+            backtrackPositions = backtrackPositions + 1
+        )
+    }
+}
