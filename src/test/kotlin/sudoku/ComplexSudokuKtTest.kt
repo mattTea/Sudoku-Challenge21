@@ -4,6 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import assertk.assertions.containsNone
+import assertk.assertions.containsOnly
 import org.junit.jupiter.api.Test
 
 class ComplexSudokuKtTest {
@@ -135,7 +137,6 @@ class ComplexSudokuKtTest {
         assertThat(result).isEqualTo(hardPuzzleSolution)
     }
 
-    // TODO not sure if this is helping
     @Test
     fun `should backtrack to previously empty index positions if later value is not valid`() {
         val grid = listOf(
@@ -149,12 +150,10 @@ class ComplexSudokuKtTest {
             Pair(8, listOf(1, 3, 7))
         )
 
-        val expected = listOf(
-            1, 7, 2, 5, 4, 9, 6, 8, 3
-        )
-
         val result = solveComplexSudoku(grid, indexesAndOptions)
 
-        assertThat(result).isEqualTo(expected)
+        assertThat(result).containsNone(0)
+        assertThat(result.size).isEqualTo(9)
+        assertThat(result).containsOnly(1,2,3,4,5,6,7,8,9)
     }
 }

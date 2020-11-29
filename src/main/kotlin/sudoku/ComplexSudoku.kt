@@ -29,13 +29,18 @@ fun solveComplexSudoku(
         } else {
             if (indexesAndOptions[indexesAndOptionsIndex].second.size - 1 > optionsIndex) {
                 solveComplexSudoku(
-                    grid = grid, // TODO <- need to create grid rather than reuse here?
+                    grid = grid, // TODO <- what grid to pass in here - original or amended?
                     indexesAndOptions = indexesAndOptions,
                     indexesAndOptionsIndex = indexesAndOptionsIndex,
                     optionsIndex = optionsIndex + 1
                 )
             } else {
-                backtrack(grid, indexesAndOptions, indexesAndOptionsIndex, optionsIndex)  // TODO <- need to create grid rather than reuse here?
+                backtrack(
+                    grid = grid, // TODO <- what grid to pass in here - original or amended?
+                    indexesAndOptions = indexesAndOptions,
+                    indexesAndOptionsIndex = indexesAndOptionsIndex,
+                    optionsIndex = optionsIndex
+                )
             }
         }
     }
@@ -74,6 +79,7 @@ fun backtrack(
         if (option == currentValueInPreviousGuessPosition) index else null
     }.single()
 
+    // if currentValueOptionsIndex is less than available indices at that indexesAndOptionsIndex
     return if (currentValueOptionsIndex < indexesAndOptions[indexesAndOptionsIndex - backtrackPositions].second.size - 1) {
         solveComplexSudoku(
             grid = createGrid(
@@ -87,7 +93,7 @@ fun backtrack(
         )
     } else {
         backtrack(
-            grid = grid,
+            grid = grid, // TODO <- what grid to pass in here - original or amended?
             indexesAndOptions = indexesAndOptions,
             indexesAndOptionsIndex = indexesAndOptionsIndex,
             optionsIndex = optionsIndex,
